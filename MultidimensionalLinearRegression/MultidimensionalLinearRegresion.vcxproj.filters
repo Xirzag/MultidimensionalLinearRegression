@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Code">
+      <UniqueIdentifier>{c005cdae-1bb5-4dfc-94d4-b0a34ebb12d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Code">
+      <UniqueIdentifier>{94b9d84b-d11b-41c2-94b8-d44d72f6737c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="matrix.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MklMatrix.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="RegressionSolver.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="RegressionData.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+    <ClCompile Include="CudaMatrix.cpp">
+      <Filter>Source Code</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MklMatrix.h">
+      <Filter>Header Code</Filter>
+    </ClInclude>
+    <ClInclude Include="RegressionSolver.h">
+      <Filter>Header Code</Filter>
+    </ClInclude>
+    <ClInclude Include="RegressionData.h">
+      <Filter>Header Code</Filter>
+    </ClInclude>
+    <ClInclude Include="matrixTest.h">
+      <Filter>Header Code</Filter>
+    </ClInclude>
+    <ClInclude Include="CudaMatrix.h">
+      <Filter>Header Code</Filter>
+    </ClInclude>
+    <ClInclude Include="cudaMatrixtest.h">
+      <Filter>Header Code</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
