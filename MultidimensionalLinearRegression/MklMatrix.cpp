@@ -16,8 +16,10 @@ MklMatrix::MklMatrix(int rows, int cols, std::initializer_list<double> list)
 {
 	allocMem = (double*)mkl_malloc(rows * cols * sizeof(double), 64);
 	int i = 0;
-	for (double elem : list)
-		allocMem[i++] = elem;
+	for (double elem : list) {
+		val(i / cols, i%cols) = elem;
+		++i;
+	}
 
 }
 
@@ -77,24 +79,22 @@ MklMatrix MklMatrix::multiplyBy(MklMatrix & other, CBLAS_TRANSPOSE transposeOthe
 	//Mat B = Other k*n
 	//Mat C = Result m*n
 
-	//Improve¿?
-
 	int n, m, k, kOther; 
 	if (transposeMe == CblasNoTrans) {
-		m = rows;
 		k = cols;
+		m = rows;
 	}
 	else {
-		m = cols;
 		k = rows;
+		m = cols;
 	}
 	if (transposeOther == CblasNoTrans) {
-		n = other.cols;
 		kOther = other.rows;
+		n = other.cols;
 	}
 	else {
-		n = other.rows;
 		kOther = other.cols;
+		n = other.rows;
 	}
 	
 
@@ -103,18 +103,10 @@ MklMatrix MklMatrix::multiplyBy(MklMatrix & other, CBLAS_TRANSPOSE transposeOthe
 	if (k != kOther)
 		throw std::invalid_argument("col - rows don't match"); 
 	else {
-
-		if (this == &other) {
-			MklMatrix copy(other);
-			cblas_dgemm(CblasRowMajor, transposeMe, transposeOther,
+			cblas_dgemm(CblasColMajor, transposeMe, transposeOther,
 				m, n, k, 1.0,
-				this->allocMem, this->cols, copy.allocMem, copy.cols,
-				0.0, result.allocMem, result.cols);
-		}else
-			cblas_dgemm(CblasRowMajor, transposeMe, transposeOther,
-				m, n, k, 1.0,
-				this->allocMem, this->cols, other.allocMem, other.cols,
-				0.0, result.allocMem, result.cols);
+				this->allocMem, this->rows, other.allocMem, other.rows,
+				0.0, result.allocMem, result.rows);
 			
 
 	}
@@ -126,16 +118,6 @@ void MklMatrix::minus(MklMatrix matrix)
 	if(matrix.cols == cols && matrix.rows == rows)
 		for (int i = 0; i < size(); i++)
 			allocMem[i] -= matrix.allocMem[i];
-}
-
-bool MklMatrix::contains(std::initializer_list<double> list)
-{
-	int i = 0;
-	for (double elem : list)
-		if (fabs(allocMem[i++] - elem) > 0.1f)
-			return false;
-
-	return true;
 }
 
 

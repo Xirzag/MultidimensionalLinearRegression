@@ -19,20 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CudaMatrix.cpp" />
     <ClCompile Include="eTimer.cpp" />
+    <ClCompile Include="Gpu.cpp" />
     <ClCompile Include="MklMatrix.cpp" />
     <ClCompile Include="RegressionData.cpp" />
     <ClCompile Include="RegressionSolver.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CudaMatrix.h" />
     <ClInclude Include="eTimer.h" />
+    <ClInclude Include="Gpu.h" />
     <ClInclude Include="MklMatrix.h" />
     <ClInclude Include="RegressionData.h" />
     <ClInclude Include="RegressionSolver.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="matrix.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CB260C09-47F1-40D4-AD58-72D3A6BB449E}</ProjectGuid>
@@ -148,7 +149,7 @@ copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"</Command>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;WIN64;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>

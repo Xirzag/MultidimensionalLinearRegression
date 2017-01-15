@@ -1,22 +1,41 @@
-#include "RegressionData.h"
 #include "RegressionSolver.h"
+#include "eTimer.h"
 
 
 int main() {
 
-	RegressionData data = RegressionData::readFromFile("test.mat");
+	RegressionData mklData = RegressionData::readFromFile("mat3.mat");
+	RegressionData cudaData(mklData);
 
-	eTimer timer;
-	timer.start();
-	RegressionSolver::Results result = RegressionSolver::solve(data);
-	timer.stop();
+	eTimer mklTimer;
+	eTimer cudaTimer;
 
-	std::cout << "Error: " << result.error << "\n"
-		<< "Solciones:\n" <<
-		result.solutions;
 
-	timer.report();
+	mklTimer.start();
+	RegressionSolver::Results mklResult = RegressionSolver::solve(mklData);
+	mklTimer.stop();
+
+
+	Gpu::init();
+	cudaTimer.start();
+	RegressionSolver::Results cudaResult = RegressionSolver::solveWithCuda(cudaData);
+	cudaTimer.stop();
+	Gpu::end();
+
+
+
+
+	std::cout << "Error: " << mklResult.error << "\n"
+		<< "Soluciones:\n" <<
+		mklResult.solutions;
+	mklTimer.report();
+
+	std::cout << "Error: " << cudaResult.error << "\n"
+		<< "Soluciones:\n" <<
+		cudaResult.solutions;
+	cudaTimer.report();
 	
+
 	getchar();
 
 }

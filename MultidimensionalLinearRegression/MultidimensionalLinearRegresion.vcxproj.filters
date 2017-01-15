@@ -27,6 +27,7 @@
     <ClCompile Include="CudaMatrix.cpp">
       <Filter>Source Code</Filter>
     </ClCompile>
+    <ClCompile Include="eTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MklMatrix.h">
@@ -47,5 +48,10 @@
     <ClInclude Include="cudaMatrixtest.h">
       <Filter>Header Code</Filter>
     </ClInclude>
+    <ClInclude Include="Gpu.h" />
+    <ClInclude Include="cudaTry.h" />
+    <ClInclude Include="eTimer.h" />
+    <ClInclude Include="tarea1.h" />
+    <ClInclude Include="tarea2.h" />
   </ItemGroup>
 </Project>

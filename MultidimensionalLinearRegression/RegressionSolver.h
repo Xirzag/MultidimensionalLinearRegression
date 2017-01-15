@@ -5,20 +5,21 @@
 #include <cusolverDn.h>
 
 #include "RegressionData.h"
-#include "eTimer.h"
-
+#include "CudaMatrix.h"
 class RegressionSolver
 {
 public:
 	struct Results {
 		MklMatrix solutions;
 		double error;
-		eTimer timer;
 	};
 	
 	static Results solve(RegressionData &data);
+	static Results solveWithCuda(RegressionData &data);
 
 private:
-	bool static  solveSystem(MklMatrix &coefficients, MklMatrix &constantTerms);
+	bool static solveSystem(MklMatrix &coefficients, MklMatrix &constantTerms);
+	bool static solveSystem(CudaMatrix &coefficients, CudaMatrix &constantTerms);
 };
+
 

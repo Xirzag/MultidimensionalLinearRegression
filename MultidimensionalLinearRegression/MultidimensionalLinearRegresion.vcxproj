@@ -24,13 +24,19 @@
   <ItemGroup>
     <ClInclude Include="CudaMatrix.h" />
     <ClInclude Include="cudaMatrixtest.h" />
+    <ClInclude Include="cudaTry.h" />
+    <ClInclude Include="eTimer.h" />
+    <ClInclude Include="Gpu.h" />
     <ClInclude Include="matrixTest.h" />
     <ClInclude Include="MklMatrix.h" />
     <ClInclude Include="RegressionData.h" />
     <ClInclude Include="RegressionSolver.h" />
+    <ClInclude Include="tarea1.h" />
+    <ClInclude Include="tarea2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CudaMatrix.cpp" />
+    <ClCompile Include="eTimer.cpp" />
     <ClCompile Include="MklMatrix.cpp" />
     <ClCompile Include="RegressionData.cpp" />
     <ClCompile Include="RegressionSolver.cpp" />
@@ -106,7 +112,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>cudart.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;cusolver.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>echo copy "$(CudaToolkitBinDir)\cudart*.dll" "$(OutDir)"

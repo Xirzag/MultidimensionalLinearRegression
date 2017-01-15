@@ -17,26 +17,23 @@ public:
 	MklMatrix(const MklMatrix &matrix); //copy constructor
 	void operator=(MklMatrix &&matrix);
 
+	MklMatrix multiplyBy(MklMatrix &other, CBLAS_TRANSPOSE transposeOther = CblasNoTrans, CBLAS_TRANSPOSE transposeMe = CblasNoTrans);
+	void minus(MklMatrix matrix);
+	
 	std::string toString();
 	std::string toMatlabString();
-	MklMatrix multiplyBy(MklMatrix &other, CBLAS_TRANSPOSE transposeOther = CblasNoTrans, CBLAS_TRANSPOSE transposeMe = CblasNoTrans);
-
-	template<CBLAS_TRANSPOSE trans1, CBLAS_TRANSPOSE trans2>
-	MklMatrix multiplyBy(MklMatrix &other);
-	void minus(MklMatrix matrix);
-
-	bool contains(std::initializer_list<double> list);
 
 	~MklMatrix();
+
 
 	inline size_t size() const {
 		return cols * rows;
 	}
 	inline double& val(int y, int x) {
-		return allocMem[y * cols + x];
+		return allocMem[x * rows + y]; 
 	}
 
-	bool operator==(MklMatrix &matrix) {
+	inline bool operator==(MklMatrix &matrix) {
 		if (matrix.cols != cols && matrix.rows != rows) return false;
 		for (int i = 0; i < size(); ++i) 
 			if (std::abs(matrix.allocMem[i] - allocMem[i]) > 1)
