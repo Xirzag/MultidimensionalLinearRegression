@@ -49,11 +49,37 @@ CudaMatrix CudaMatrix::multiplyBy(CudaMatrix & matrixB, cublasOperation_t transp
 		throw std::invalid_argument("col - rows don't match");
 	else {
 		double alpha = 1.0, beta = 0.0;
-		int cublasStatus = cublasDgemm(Gpu::cuBlasHandle, transposeA, transposeB,
-			m, n, k, &alpha, cudaPointer, rows,
-			matrixB.cudaPointer, matrixB.rows, &beta, result.cudaPointer, result.rows);
-		if (cublasStatus != 0)
-			throw std::invalid_argument("WATCH OUT!");
+#ifdef CUDA_MORE_MULTIPLICATION
+		if (m == 1 && n == 1) {
+
+			int cublasStatus = cublasDdot(Gpu::cuBlasHandle, k, this->cudaPointer, 1, matrixB.cudaPointer, 1, result.cudaPointer);
+			if (cublasStatus != 0)
+				throw std::invalid_argument("Error in Cuda Multiplication");
+
+
+		}
+		elseif (n == 1) {
+
+			int cublasStatus = cublasDgemv(Gpu::cuBlasHandle, transposeA, this->rows, this->cols, &alpha,
+				this->cudaPointer, this->rows,
+				matrixB.cudaPointer, 1, 0, result.cudaPointer, 1);
+			if (cublasStatus != 0)
+				throw std::invalid_argument("Error in Cuda Multiplication");
+
+		}
+		else 
+#endif
+		{
+
+			int cublasStatus = cublasDgemm(Gpu::cuBlasHandle, transposeA, transposeB,
+				m, n, k, &alpha, cudaPointer, rows,
+				matrixB.cudaPointer, matrixB.rows, &beta, result.cudaPointer, result.rows);
+			if (cublasStatus != 0)
+				throw std::invalid_argument("Error in Cuda Multiplication");
+
+		}
+
+		
 	}
 	return result;
 }

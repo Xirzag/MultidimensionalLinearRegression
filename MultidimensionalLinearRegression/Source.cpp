@@ -1,20 +1,20 @@
 #include "RegressionSolver.h"
 #include "eTimer.h"
 
-
 int main() {
 
-	RegressionData mklData = RegressionData::readFromFile("mat3.mat");
+	
+	RegressionData mklData = RegressionData::readFromFile("data");
 	RegressionData cudaData(mklData);
 
 	eTimer mklTimer;
 	eTimer cudaTimer;
 
-
-	mklTimer.start();
-	RegressionSolver::Results mklResult = RegressionSolver::solve(mklData);
-	mklTimer.stop();
-
+	for (int i = 0; i < 4; ++i) {
+		mklTimer.start();
+		RegressionSolver::Results mklResult = RegressionSolver::solve(mklData);
+		mklTimer.stop();
+	}
 
 	Gpu::init();
 	cudaTimer.start();
@@ -23,7 +23,9 @@ int main() {
 	Gpu::end();
 
 
-
+	mklTimer.start();
+	RegressionSolver::Results mklResult = RegressionSolver::solve(mklData);
+	mklTimer.stop();
 
 	std::cout << "Error: " << mklResult.error << "\n"
 		<< "Soluciones:\n" <<
@@ -37,6 +39,8 @@ int main() {
 	
 
 	getchar();
+
+	return 0;
 
 }
 

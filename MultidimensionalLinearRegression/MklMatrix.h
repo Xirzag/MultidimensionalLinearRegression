@@ -18,7 +18,7 @@ public:
 	void operator=(MklMatrix &&matrix);
 
 	MklMatrix multiplyBy(MklMatrix &other, CBLAS_TRANSPOSE transposeOther = CblasNoTrans, CBLAS_TRANSPOSE transposeMe = CblasNoTrans);
-	void minus(MklMatrix matrix);
+	void minus(MklMatrix &matrix);
 	
 	std::string toString();
 	std::string toMatlabString();

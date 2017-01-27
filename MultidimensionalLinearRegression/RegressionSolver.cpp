@@ -7,9 +7,7 @@ RegressionSolver::Results RegressionSolver::solveWithCuda(RegressionData & data)
 
 		
 	CudaMatrix coefficients = y.multiplyBy(y, CUBLAS_OP_N, CUBLAS_OP_T);
-	auto t1 = coefficients.get();
 	CudaMatrix constantTerms = y.multiplyBy(z, CUBLAS_OP_N, CUBLAS_OP_T);
-	auto t2 = constantTerms.get();
 
 	Gpu::synchronize();
 
@@ -22,8 +20,6 @@ RegressionSolver::Results RegressionSolver::solveWithCuda(RegressionData & data)
 	CudaMatrix &d = z;
 
 	d.minus(y.multiplyBy(unknowns));
-
-	auto t3 = d.get();
 
 	Gpu::synchronize();
 	double error = sqrt(d.multiplyBy(d, CUBLAS_OP_N, CUBLAS_OP_T).get().val(0,0));
@@ -65,9 +61,27 @@ bool RegressionSolver::solveSystem(MklMatrix & coefficients, MklMatrix & constan
 {
 
 	int *pivot = new int[coefficients.rows]; //Todo: To MKL
+
+#ifdef USE_GETRS
+	int result = LAPACKE_dgetrf(LAPACK_COL_MAJOR,
+		coefficients.rows, coefficients.cols, coefficients.allocMem,
+		coefficients.rows, pivot);
+
+	if (result != 0)
+		return false;
+
+	result = LAPACKE_dgetrs(LAPACK_COL_MAJOR, 'N', constantTerms.rows, 1,
+		coefficients.allocMem, coefficients.rows, pivot, 
+		constantTerms.allocMem, constantTerms.rows);*/
+#else
+
 	int result = LAPACKE_dgesv(LAPACK_COL_MAJOR, coefficients.rows, constantTerms.cols,
 		coefficients.allocMem, coefficients.rows, pivot,
 		constantTerms.allocMem, constantTerms.rows);
+
+#endif
+
+	delete[] pivot;
 
 	return result == 0;
 }
@@ -88,7 +102,7 @@ bool RegressionSolver::solveSystem(CudaMatrix & coefficients, CudaMatrix & const
 		coefficients.cols, coefficients.rows, coefficients.cudaPointer,
 		coefficients.cols, Work, dev_pivot, dev_info);
 	cusolverStatus = cusolverDnDgetrs(Gpu::cuSolverHandle,
-		CUBLAS_OP_T, coefficients.cols, 1, coefficients.cudaPointer, coefficients.cols,
+		CUBLAS_OP_N, coefficients.cols, 1, coefficients.cudaPointer, coefficients.cols,
 		dev_pivot, constantTerms.cudaPointer, coefficients.cols, dev_info);
 
 

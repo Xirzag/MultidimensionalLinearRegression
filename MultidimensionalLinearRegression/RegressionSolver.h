@@ -6,6 +6,8 @@
 
 #include "RegressionData.h"
 #include "CudaMatrix.h"
+
+
 class RegressionSolver
 {
 public:
