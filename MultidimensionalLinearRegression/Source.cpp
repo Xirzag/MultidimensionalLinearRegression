@@ -10,11 +10,6 @@ int main() {
 	eTimer mklTimer;
 	eTimer cudaTimer;
 
-	for (int i = 0; i < 4; ++i) {
-		mklTimer.start();
-		RegressionSolver::Results mklResult = RegressionSolver::solve(mklData);
-		mklTimer.stop();
-	}
 
 	Gpu::init();
 	cudaTimer.start();
